@@ -1,10 +1,21 @@
 package com.heowc.post
 
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import spock.lang.Shared
 import spock.lang.Specification
 
+@SpringBootTest
 class PostAddServiceSpec extends Specification {
 
-    def service = new SimplePostAddService(null)
+    @Shared service
+
+    @Autowired
+    PostRepository repository
+
+    def setup() {
+        service = new SimplePostAddService(repository)
+    }
 
     def "add(PostRequest) 성공"() {
         given:
