@@ -15,6 +15,8 @@ public class SimplePostAddService implements PostAddService {
 
     @Override
     public Optional<Post> add(PostRequest postRequest) {
-        return Optional.empty();
+        Post post = postRequest.toPost();
+        Post savedPost = repository.save(post);
+        return Optional.of(savedPost);
     }
 }
