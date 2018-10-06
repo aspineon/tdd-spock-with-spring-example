@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext
 import spock.lang.Specification
 
 @SpringBootTest(classes = Application)
-class GroovyApplicationTests extends Specification {
+class GroovyApplicationSpec extends Specification {
 
     @Autowired
     ApplicationContext context
