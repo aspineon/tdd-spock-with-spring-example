@@ -2,6 +2,8 @@ package com.heowc.post;
 
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class SimplePostSearchService implements PostSearchService {
 
@@ -13,6 +15,6 @@ public class SimplePostSearchService implements PostSearchService {
 
     @Override
     public Post findById(Long id) {
-        return null;
+        return repository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 }
