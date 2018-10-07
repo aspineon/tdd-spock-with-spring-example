@@ -1,6 +1,6 @@
 package com.heowc.post;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
+public interface PostRepository extends CrudRepository<Post, Long> {
 }
