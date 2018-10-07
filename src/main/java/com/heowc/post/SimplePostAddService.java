@@ -2,8 +2,6 @@ package com.heowc.post;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class SimplePostAddService implements PostAddService {
 
@@ -14,9 +12,8 @@ public class SimplePostAddService implements PostAddService {
     }
 
     @Override
-    public Optional<Post> add(PostRequest postRequest) {
+    public Post add(PostRequest postRequest) {
         Post post = postRequest.toPost();
-        Post savedPost = repository.save(post);
-        return Optional.of(savedPost);
+        return repository.save(post);
     }
 }

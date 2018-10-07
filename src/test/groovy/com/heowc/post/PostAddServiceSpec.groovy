@@ -26,8 +26,12 @@ class PostAddServiceSpec extends Specification {
 
         then:
         with(postOp) {
-            get().title == postRequest.title
-            get().content == postRequest.content
+            title == postRequest.title
+            content == postRequest.content
         }
+    }
+
+    def cleanup() {
+        repository.deleteAll()
     }
 }
