@@ -1,6 +1,6 @@
 package com.heowc.post;
 
-public interface PostSearchService {
+public interface ReadPostService {
 
     Post findById(Long id);
 }

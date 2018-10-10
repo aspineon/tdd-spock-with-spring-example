@@ -4,11 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import spock.lang.Specification;
 
 import java.util.NoSuchElementException;
 
@@ -17,16 +15,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PostSearchServiceTest {
+public class ReadPostServiceTest {
 
-    private PostSearchService service;
+    private ReadPostService service;
 
     @Autowired
     private PostRepository repository;
 
     @Before
     public void setup() {
-        service = new SimplePostSearchService(repository);
+        service = new SimpleReadPostService(repository);
     }
 
     @Test

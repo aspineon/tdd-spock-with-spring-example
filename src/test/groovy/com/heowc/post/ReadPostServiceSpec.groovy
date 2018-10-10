@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 @SpringBootTest
-class PostSearchServiceSpec extends Specification {
+class ReadPostServiceSpec extends Specification {
 
     def service
 
@@ -13,7 +13,7 @@ class PostSearchServiceSpec extends Specification {
     PostRepository repository
 
     def setup() {
-        service = new SimplePostSearchService(repository)
+        service = new SimpleReadPostService(repository)
     }
 
     def "findById() 성공"() {

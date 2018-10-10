@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 
 @Service
-public class SimplePostSearchService implements PostSearchService {
+public class SimpleReadPostService implements ReadPostService {
 
     private final PostRepository repository;
 
-    public SimplePostSearchService(PostRepository repository) {
+    public SimpleReadPostService(PostRepository repository) {
         this.repository = repository;
     }
 
