@@ -22,6 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<spock.version>spock-1.2</spock.version>
 	</properties>
 
 	<dependencyManagement>
@@ -67,14 +68,14 @@
 		<dependency>
 			<groupId>org.spockframework.spock</groupId>
 			<artifactId>spock-core</artifactId>
-			<version>spock-1.2</version>
+			<version>${spock.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.spockframework.spock</groupId>
 			<artifactId>spock-spring</artifactId>
-			<version>spock-1.2</version>
+			<version>${spock.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -84,15 +85,6 @@
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
-		</repository>
-
-		<repository>
-			<id>spring-libs-release</id>
-			<name>Spring Releases</name>
-			<url>https://repo.spring.io/libs-release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 
