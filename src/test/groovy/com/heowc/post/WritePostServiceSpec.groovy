@@ -6,7 +6,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
-class PostAddServiceSpec extends Specification {
+class WritePostServiceSpec extends Specification {
 
     @Shared service
 
@@ -14,15 +14,15 @@ class PostAddServiceSpec extends Specification {
     PostRepository repository
 
     def setup() {
-        service = new SimplePostAddService(repository)
+        service = new SimpleWritePostService(repository)
     }
 
-    def "add(PostRequest) 성공"() {
+    def "write(PostRequest) 성공"() {
         given:
         def postRequest = new PostRequest("제목 1", "본문 1")
 
         when:
-        def postOp = service.add(postRequest)
+        def postOp = service.write(postRequest)
 
         then:
         with(postOp) {

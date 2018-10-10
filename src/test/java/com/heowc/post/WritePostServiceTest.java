@@ -12,25 +12,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PostAddServiceTest {
+public class WritePostServiceTest {
 
-    private PostAddService service;
+    private WritePostService service;
 
     @Autowired
     private PostRepository repository;
 
     @Before
     public void setup() {
-        service = new SimplePostAddService(repository);
+        service = new SimpleWritePostService(repository);
     }
 
     @Test
-    public void test_add_성공() {
+    public void test_write_성공() {
         // given
         PostRequest postRequest = new PostRequest("제목 1", "본문 1");
 
         // when
-        Post post = service.add(postRequest);
+        Post post = service.write(postRequest);
 
         // then
         assertThat(post).hasFieldOrPropertyWithValue("title", postRequest.getTitle());
