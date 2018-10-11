@@ -1,5 +1,6 @@
 package com.heowc.post
 
+import com.heowc.config.TestConstant
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -18,7 +19,7 @@ class ReadPostServiceSpec extends Specification {
 
     def "findById() 성공"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", null, null))
+        def post = repository.save(new Post(null, "제목", "본문", TestConstant.ID,null, null))
 
         when:
         def byId = service.findById(post.id)
@@ -26,6 +27,7 @@ class ReadPostServiceSpec extends Specification {
         then:
         post.title == byId.title
         post.content == byId.content
+        post.createdBy == byId.createdBy
     }
 
     def "findById() 없는 데이터 검색로 인한 실패"() {

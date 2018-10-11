@@ -1,6 +1,7 @@
 package com.heowc.post;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,6 +16,9 @@ public class Post {
     private Long id;
     private String title;
     private String content;
+
+    @CreatedBy
+    private String createdBy;
 
     @CreatedDate
     private LocalDateTime createdAt;

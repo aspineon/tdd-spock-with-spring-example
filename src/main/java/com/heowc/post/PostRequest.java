@@ -11,7 +11,7 @@ public class PostRequest {
     private String content;
 
     public Post toPost() {
-        return new Post(null, this.title, this.content, null, null);
+        return new Post(null, this.title, this.content, null, null, null);
     }
 
 }
