@@ -25,4 +25,9 @@ public class Post {
 
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
+
+    public void changeFields(Post post) {
+        this.title = post.getTitle();
+        this.content = post.getContent();
+    }
 }

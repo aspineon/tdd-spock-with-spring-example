@@ -32,6 +32,16 @@ class EditPostServiceSpec extends Specification {
         thrown(AccessDeniedException.class)
     }
 
+    def "없는 게시물을 지우려고 하므로 실패"() {
+        given:
+
+        when:
+        service.edit(new Post(1, "수정된 제목", "수정된 본문", TestConstant.ID, null, null))
+
+        then:
+        thrown(NoSuchElementException.class)
+    }
+
     def "동일한 글쓴이 ID가 수정하여 성공"() {
         given:
         def postRequest = new PostRequest("제목", "본문")
