@@ -12,7 +12,7 @@ public class SimpleEditPostService implements EditPostService {
     }
 
     @Override
-    public void edit(Post post) {
-
+    public Post edit(Post post) {
+        return null;
     }
 }
