@@ -1,8 +1,6 @@
 package com.heowc.post;
 
 import com.heowc.config.TestConfig;
-import com.heowc.config.TestConstant;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +37,7 @@ public class EditPostServiceTest {
         Post post = repository.save(postRequest.toPost());
 
         assertThatThrownBy(
-            () -> service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문", TestConstant.ID + 1, null, null))
+            () -> service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문",  "heowc" + 1, null, null))
         ).isInstanceOf(AccessDeniedException.class);
     }
 
@@ -47,7 +45,7 @@ public class EditPostServiceTest {
     public void test_없는_게시물을_지우려고_하므로_실패() {
 
         assertThatThrownBy(
-            () -> service.edit(new Post(1L, "수정된 제목", "수정된 본문", TestConstant.ID, null, null))
+            () -> service.edit(new Post(1L, "수정된 제목", "수정된 본문", "heowc", null, null))
         ).isInstanceOf(NoSuchElementException.class);
     }
 
@@ -56,7 +54,7 @@ public class EditPostServiceTest {
         PostRequest postRequest = new PostRequest("제목", "본문");
         Post post = repository.save(postRequest.toPost());
 
-        Post updatedPost = service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문", TestConstant.ID, null, null));
+        Post updatedPost = service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문", "heowc", null, null));
 
         Optional<Post> byId = repository.findById(updatedPost.getId());
 

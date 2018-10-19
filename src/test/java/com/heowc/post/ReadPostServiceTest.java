@@ -1,6 +1,5 @@
 package com.heowc.post;
 
-import com.heowc.config.TestConstant;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,7 @@ public class ReadPostServiceTest {
     @Test
     public void test_findById_성공() {
         // given
-        Post post = repository.save(new Post(null, "제목", "본문", TestConstant.ID,null, null));
+        Post post = repository.save(new Post(null, "제목", "본문", "heowc",null, null));
 
         // when
         Post byId = service.findById(post.getId());

@@ -1,6 +1,6 @@
 package com.heowc.post
 
-import com.heowc.config.TestConstant
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -19,7 +19,7 @@ class ReadPostServiceSpec extends Specification {
 
     def "findById() 성공"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", TestConstant.ID,null, null))
+        def post = repository.save(new Post(null, "제목", "본문", "heowc",null, null))
 
         when:
         def byId = service.findById(post.id)

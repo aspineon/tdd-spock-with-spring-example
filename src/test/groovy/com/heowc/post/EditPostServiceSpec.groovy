@@ -1,7 +1,7 @@
 package com.heowc.post
 
 import com.heowc.config.TestConfig
-import com.heowc.config.TestConstant
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -26,7 +26,7 @@ class EditPostServiceSpec extends Specification {
         def post = repository.save(postRequest.toPost())
 
         when:
-        service.edit(new Post(post.id, "수정된 제목", "수정된 본문", TestConstant.ID + 1, null, null))
+        service.edit(new Post(post.id, "수정된 제목", "수정된 본문", "heowc" + 1, null, null))
 
         then:
         thrown(AccessDeniedException.class)
@@ -36,7 +36,7 @@ class EditPostServiceSpec extends Specification {
         given:
 
         when:
-        service.edit(new Post(1, "수정된 제목", "수정된 본문", TestConstant.ID, null, null))
+        service.edit(new Post(1, "수정된 제목", "수정된 본문", "heowc", null, null))
 
         then:
         thrown(NoSuchElementException.class)
@@ -48,7 +48,7 @@ class EditPostServiceSpec extends Specification {
         def post = repository.save(postRequest.toPost())
 
         when:
-        def updatedPost = service.edit(new Post(post.id, "수정된 제목", "수정된 본문", TestConstant.ID, null, null))
+        def updatedPost = service.edit(new Post(post.id, "수정된 제목", "수정된 본문", "heowc", null, null))
 
         then:
         def byId = repository.findById(updatedPost.id)

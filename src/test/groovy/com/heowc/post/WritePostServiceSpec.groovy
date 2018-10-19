@@ -1,7 +1,7 @@
 package com.heowc.post
 
 import com.heowc.config.TestConfig
-import com.heowc.config.TestConstant
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -32,7 +32,7 @@ class WritePostServiceSpec extends Specification {
         with(postOp) {
             title == postRequest.title
             content == postRequest.content
-            createdBy == TestConstant.ID
+            createdBy == "heowc"
         }
     }
 
