@@ -7,7 +7,6 @@ import org.springframework.data.domain.AuditorAware;
 import java.util.Optional;
 
 @Configuration
-@Profile("product")
 public class SimpleAuditorAware implements AuditorAware<String> {
 
     @Override
