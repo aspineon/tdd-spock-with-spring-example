@@ -32,7 +32,7 @@ class EditPostServiceSpec extends Specification {
         thrown(AccessDeniedException.class)
     }
 
-    def "없는 게시물을 지우려고 하므로 실패"() {
+    def "없는 게시물을 수정하려고 하므로 실패"() {
         given:
 
         when:
