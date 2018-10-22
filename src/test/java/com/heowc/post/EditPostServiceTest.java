@@ -44,7 +44,7 @@ public class EditPostServiceTest {
     }
 
     @Test
-    public void test_없는_게시물을_지우려고_하므로_실패() {
+    public void test_없는_게시물을_수정하려고_하므로_실패() {
         // given
         final long UNKNOWN_ID = -1L;
 
