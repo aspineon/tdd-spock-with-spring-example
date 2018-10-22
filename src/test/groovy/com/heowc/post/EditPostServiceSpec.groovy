@@ -34,9 +34,10 @@ class EditPostServiceSpec extends Specification {
 
     def "없는 게시물을 수정하려고 하므로 실패"() {
         given:
+        def UNKNOWN_ID = -1L
 
         when:
-        service.edit(new Post(1, "수정된 제목", "수정된 본문", "heowc", null, null))
+        service.edit(new Post(UNKNOWN_ID, "수정된 제목", "수정된 본문", "heowc", null, null))
 
         then:
         thrown(NoSuchElementException.class)

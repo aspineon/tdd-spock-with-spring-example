@@ -42,8 +42,10 @@ public class ReadPostServiceTest {
     }
 
     public void test_findById_없는_데이터_검색로_인한_실패() {
-        // when-then
+        // given
         final long UNKNOWN_ID = 1L;
+
+        // when-then
         assertThatThrownBy(() -> service.findById(UNKNOWN_ID)).isInstanceOf(NoSuchElementException.class);
     }
 

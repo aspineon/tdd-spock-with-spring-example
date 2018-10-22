@@ -31,8 +31,10 @@ class ReadPostServiceSpec extends Specification {
     }
 
     def "findById() 없는 데이터 검색로 인한 실패"() {
-        when:
+        given:
         def UNKNOWN_ID = 1L
+
+        when:
         service.findById(UNKNOWN_ID)
 
         then:
