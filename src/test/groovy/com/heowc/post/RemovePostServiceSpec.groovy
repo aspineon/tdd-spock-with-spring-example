@@ -18,16 +18,15 @@ class RemovePostServiceSpec extends Specification {
     
     def "동일한 글쓴이 ID가 아니므로 실패"() {
         given:
-        def post = new Post(1L, "제목", "본문", "heowc", null, null)
+        def post = new Post(null, "제목", "본문", "heowc", null, null)
         repository.save(post)
 
         when:
-        service.remove(new Post(1L, "제목", "본문", "wonchul", null, null))
+        service.remove(new Post(post.id, "제목", "본문", "wonchul", null, null))
 
         then:
         thrown(AccessDeniedException.class)
         def byId = repository.findById(post.id)
-        !byId.empty()
         post.id == byId.get().id
         post.title == byId.get().title
         post.content == byId.get().content
@@ -36,9 +35,10 @@ class RemovePostServiceSpec extends Specification {
 
     def "없는 게시물을 지우려고 하므로 실패"() {
         given:
+        def UNKNOWN_ID = -1L
 
         when:
-        service.remove(new Post(1L, "제목", "본문", "heowc", null, null))
+        service.remove(new Post(UNKNOWN_ID, "제목", "본문", "heowc", null, null))
 
         then:
         thrown(NoSuchElementException.class)
@@ -46,16 +46,14 @@ class RemovePostServiceSpec extends Specification {
     
     def "동일한 글쓴이 ID가 삭제하여 성공"() {
         given:
-        def post = new Post(1L, "제목", "본문", "heowc", null, null)
+        def post = new Post(null, "제목", "본문", "heowc", null, null)
         repository.save(post)
 
         when:
-        service.remove(new Post(1L, null, null, "heowc", null, null))
+        service.remove(new Post(post.id, null, null, "heowc", null, null))
 
         then:
         notThrown(AccessDeniedException.class)
-        def byId = repository.findById(post.id)
-        byId.empty()
     }
 
     def cleanup() {
