@@ -9,7 +9,7 @@ import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
 
 @Configuration
 @EnableJdbcRepositories(basePackageClasses = Application.class)
-@EnableJdbcAuditing()
+@EnableJdbcAuditing
 @Import(JdbcConfiguration.class)
 public class SimpleJdbcConfiguation {
 }
