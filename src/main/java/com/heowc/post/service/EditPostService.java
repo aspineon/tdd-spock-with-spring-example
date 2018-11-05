@@ -1,6 +1,6 @@
 package com.heowc.post.service;
 
-import com.heowc.post.Post;
+import com.heowc.post.domain.Post;
 
 public interface EditPostService {
 

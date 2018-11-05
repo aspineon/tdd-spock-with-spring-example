@@ -1,7 +1,7 @@
 package com.heowc.post.service;
 
-import com.heowc.post.Post;
-import com.heowc.post.PostRequest;
+import com.heowc.post.domain.Post;
+import com.heowc.post.domain.PostRequest;
 
 public interface WritePostService {
 

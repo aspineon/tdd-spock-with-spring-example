@@ -1,7 +1,7 @@
 package com.heowc.post.service;
 
-import com.heowc.post.Post;
-import com.heowc.post.PostRepository;
+import com.heowc.post.domain.Post;
+import com.heowc.post.domain.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;

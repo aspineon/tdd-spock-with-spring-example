@@ -1,4 +1,4 @@
-package com.heowc.post;
+package com.heowc.post.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

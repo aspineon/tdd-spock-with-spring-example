@@ -1,8 +1,8 @@
 package com.heowc.post.service;
 
-import com.heowc.post.Post;
-import com.heowc.post.PostRepository;
-import com.heowc.post.PostRequest;
+import com.heowc.post.domain.Post;
+import com.heowc.post.domain.PostRepository;
+import com.heowc.post.domain.PostRequest;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,9 +1,8 @@
 package com.heowc.post.service
 
 import com.heowc.config.TestConfig
-import com.heowc.post.PostRepository
-import com.heowc.post.PostRequest
-import com.heowc.post.service.SimpleWritePostService
+import com.heowc.post.domain.PostRepository
+import com.heowc.post.domain.PostRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import

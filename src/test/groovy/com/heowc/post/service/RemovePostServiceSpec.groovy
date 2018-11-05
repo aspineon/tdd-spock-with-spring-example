@@ -1,9 +1,8 @@
 package com.heowc.post.service
 
-import com.heowc.post.AccessDeniedException
-import com.heowc.post.Post
-import com.heowc.post.PostRepository
-import com.heowc.post.service.SimpleRemovePostService
+import com.heowc.post.domain.AccessDeniedException
+import com.heowc.post.domain.Post
+import com.heowc.post.domain.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
