@@ -1,6 +1,11 @@
-package com.heowc.post;
+package com.heowc.post.service;
 
 import com.heowc.config.TestConfig;
+import com.heowc.post.AccessDeniedException;
+import com.heowc.post.Post;
+import com.heowc.post.PostRepository;
+import com.heowc.post.service.RemovePostService;
+import com.heowc.post.service.SimpleRemovePostService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

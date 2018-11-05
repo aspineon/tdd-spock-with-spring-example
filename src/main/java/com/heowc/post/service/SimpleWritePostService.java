@@ -1,5 +1,8 @@
-package com.heowc.post;
+package com.heowc.post.service;
 
+import com.heowc.post.Post;
+import com.heowc.post.PostRepository;
+import com.heowc.post.PostRequest;
 import org.springframework.stereotype.Service;
 
 @Service

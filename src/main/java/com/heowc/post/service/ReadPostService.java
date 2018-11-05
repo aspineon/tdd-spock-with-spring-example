@@ -1,4 +1,6 @@
-package com.heowc.post;
+package com.heowc.post.service;
+
+import com.heowc.post.Post;
 
 public interface ReadPostService {
 

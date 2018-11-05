@@ -1,5 +1,9 @@
-package com.heowc.post;
+package com.heowc.post.service;
 
+import com.heowc.post.Post;
+import com.heowc.post.PostRepository;
+import com.heowc.post.service.ReadPostService;
+import com.heowc.post.service.SimpleReadPostService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,8 @@
-package com.heowc.post
+package com.heowc.post.service
 
-
+import com.heowc.post.Post
+import com.heowc.post.PostRepository
+import com.heowc.post.service.SimpleReadPostService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
