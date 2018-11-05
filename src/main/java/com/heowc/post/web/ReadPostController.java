@@ -2,9 +2,12 @@ package com.heowc.post.web;
 
 import com.heowc.post.domain.Post;
 import com.heowc.post.service.ReadPostService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @RestController
 public class ReadPostController implements PostController {
@@ -16,7 +19,18 @@ public class ReadPostController implements PostController {
     }
 
     @GetMapping("/{id}")
-    public Post read(@PathVariable Long id) {
-        return null;
+    public Post read(@PathVariable(required = false) Long id) {
+
+        if (Objects.isNull(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        return service.findById(id);
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchElementException.class)
+    public void notFound() {
+        // Nothing to do
     }
 }

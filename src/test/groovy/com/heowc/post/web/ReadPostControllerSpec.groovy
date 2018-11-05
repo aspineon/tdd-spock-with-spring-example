@@ -17,11 +17,6 @@ class ReadPostControllerSpec extends Specification {
     @Autowired
     TestRestTemplate restTemplate
 
-//    def setup() {
-//        def uriComponents = UriComponentsBuilder.fromHttpUrl("http://localhost").port(port).build()
-//        restTemplate = new RestTemplateBuilder().rootUri(uriComponents.toUriString()).build()
-//    }
-
     def "없는 id를 조회하여 HttpStatus(404)를 반환하며 실패"() {
         when:
         def entity = restTemplate.getForEntity("/posts/{id}", Post.class, 1L)
@@ -30,12 +25,12 @@ class ReadPostControllerSpec extends Specification {
         entity.statusCode == HttpStatus.NOT_FOUND
     }
 
-    def "id를 입력하지 않아 HttpStatus(400)를 반환하며 실패"() {
+    def "올바르지 않은 id를 조회하여 HttpStatus(404)를 반환하며 실패"() {
         given:
-        repository.save(new Post(1L, "제목", "본문", "heowc", null,
+        repository.save(new Post(null, "제목", "본문", "heowc", null,
                 null))
         when:
-        def entity = restTemplate.getForEntity("/posts/", Post.class)
+        def entity = restTemplate.getForEntity("/posts/{id}", Post.class, "s")
 
         then:
         entity.statusCode == HttpStatus.BAD_REQUEST
@@ -43,11 +38,10 @@ class ReadPostControllerSpec extends Specification {
 
     def "해당 id에 대한 게시글이 존재하므로 HttpStatus(200)과 Post 반환하며 성공"() {
         given:
-        def post = new Post(1L, "제목", "본문", "heowc", null, null)
-        repository.save(post)
+        def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
 
         when:
-        def entity = restTemplate.getForEntity("/posts/{id}", Post.class, 1L)
+        def entity = restTemplate.getForEntity("/posts/{id}", Post.class, post.getId())
 
         then:
         entity.statusCode == HttpStatus.OK
@@ -57,5 +51,9 @@ class ReadPostControllerSpec extends Specification {
             post.content == content
             post.createdBy == createdBy
         }
+    }
+
+    def cleanup() {
+        repository.deleteAll()
     }
 }
