@@ -4,10 +4,8 @@ import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.client.RestTemplateBuilder
-import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
-import org.springframework.web.util.UriComponentsBuilder
 import spock.lang.Specification
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -16,19 +14,13 @@ class ReadPostControllerSpec extends Specification {
     @Autowired
     PostRepository repository
 
-    @LocalServerPort
-    def port
+    @Autowired
+    TestRestTemplate restTemplate
 
-    def restTemplate
-
-    def setup() {
-        def uriComponents = UriComponentsBuilder
-                .fromHttpUrl("http://localhost")
-                .port(port)
-                .build()
-
-        restTemplate = new RestTemplateBuilder().rootUri(uriComponents.toUriString()).build()
-    }
+//    def setup() {
+//        def uriComponents = UriComponentsBuilder.fromHttpUrl("http://localhost").port(port).build()
+//        restTemplate = new RestTemplateBuilder().rootUri(uriComponents.toUriString()).build()
+//    }
 
     def "없는 id를 조회하여 HttpStatus(404)를 반환하며 실패"() {
         when:
@@ -43,7 +35,7 @@ class ReadPostControllerSpec extends Specification {
         repository.save(new Post(1L, "제목", "본문", "heowc", null,
                 null))
         when:
-        def entity = restTemplate.getForEntity("/posts/{id}", Post.class, 1L)
+        def entity = restTemplate.getForEntity("/posts/", Post.class)
 
         then:
         entity.statusCode == HttpStatus.BAD_REQUEST
