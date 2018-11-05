@@ -7,7 +7,13 @@ import spock.lang.Specification
 @SpringBootTest
 class ReadPostControllerSpec extends Specification {
 
-    def "없는 id를 조회하여 실패"() {
+    def "없는 id를 조회하여 HttpStatus(400)를 반환하며 실패"() {
+//        given:
+//        when:
+//        then:
+    }
+
+    def "id를 입력하지 않아 HttpStatus(404)를 반환하며 실패"() {
 //        given:
 //        when:
 //        then:
