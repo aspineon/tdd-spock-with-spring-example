@@ -4,7 +4,7 @@
 # Spec
 - java 1.8
 - groovy 2.4
-- spring boot 2.0.5
+- spring boot 2.1.0
 - spring data jdbc 1.0.0
 - spock 1.2
 - h2
