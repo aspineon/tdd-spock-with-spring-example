@@ -36,7 +36,7 @@ class WritePostControllerSpec extends Specification {
         def entity = restTemplate.exchange("/posts", HttpMethod.POST, httpEntity, Post.class)
 
         then:
-        entity.statusCode == HttpStatus.UNSUPPORTED_MEDIA_TYPE
+        entity.statusCode == HttpStatus.BAD_REQUEST
     }
 
     def "제목이 비어있어 HttpStatus(400)를 반환하며 실패"() {
@@ -94,7 +94,6 @@ class WritePostControllerSpec extends Specification {
 
         then:
         entity.statusCode == HttpStatus.OK
-        println entity.body
         with(entity.body, Post.class) {
             request.title == title
             request.content == content
