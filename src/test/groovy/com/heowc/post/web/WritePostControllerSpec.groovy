@@ -7,7 +7,11 @@ import com.heowc.post.domain.PostRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import spock.lang.Specification
 
 import java.util.stream.Collectors
@@ -23,11 +27,16 @@ class WritePostControllerSpec extends Specification {
     TestRestTemplate restTemplate
 
     def "body가 비어있어 HttpStatus(400)를 반환하며 실패"() {
+        given:
+        HttpHeaders headers = new HttpHeaders()
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8)
+        HttpEntity<PostRequest> httpEntity = new HttpEntity<>(headers)
+
         when:
-        def entity = restTemplate.postForEntity("/posts", null, Post.class)
+        def entity = restTemplate.exchange("/posts", HttpMethod.POST, httpEntity, Post.class)
 
         then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        entity.statusCode == HttpStatus.UNSUPPORTED_MEDIA_TYPE
     }
 
     def "제목이 비어있어 HttpStatus(400)를 반환하며 실패"() {
@@ -85,6 +94,7 @@ class WritePostControllerSpec extends Specification {
 
         then:
         entity.statusCode == HttpStatus.OK
+        println entity.body
         with(entity.body, Post.class) {
             request.title == title
             request.content == content
