@@ -45,7 +45,7 @@ class ReadPostControllerSpec extends Specification {
 
         then:
         entity.statusCode == HttpStatus.OK
-        with(entity.getBody(), Post.class) {
+        with(entity.body, Post.class) {
             post.id == id
             post.title == title
             post.content == content
