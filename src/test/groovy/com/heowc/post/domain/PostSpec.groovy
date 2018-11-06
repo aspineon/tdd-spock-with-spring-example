@@ -1,6 +1,5 @@
 package com.heowc.post.domain
 
-import com.heowc.post.domain.Post
 import spock.lang.Specification
 
 class PostSpec extends Specification {
