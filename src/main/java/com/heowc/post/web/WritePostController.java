@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WritePostController implements PostController {
 
+
     @PostMapping
     public Post write(@RequestBody PageRequest pageRequest) {
         return null;
