@@ -25,7 +25,7 @@ class ReadPostControllerSpec extends Specification {
         entity.statusCode == HttpStatus.NOT_FOUND
     }
 
-    def "올바르지 않은 id를 조회하여 HttpStatus(404)를 반환하며 실패"() {
+    def "올바르지 않은 id를 조회하여 HttpStatus(400)를 반환하며 실패"() {
         given:
         repository.save(new Post(null, "제목", "본문", "heowc", null,
                 null))
