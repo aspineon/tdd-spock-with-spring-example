@@ -27,7 +27,7 @@ class EditPostControllerSpec extends Specification {
 
     }
 
-    def "없는 Post를 수정하려고 하여 HttpStatus(400)를 반환하며 실패"() {
+    def "없는 Post를 수정하려고 하여 HttpStatus(404)를 반환하며 실패"() {
 
     }
 
