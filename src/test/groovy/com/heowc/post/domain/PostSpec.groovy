@@ -13,7 +13,7 @@ class PostSpec extends Specification {
         post.changeFields(modifiedPost)
 
         then:
-        with(post) {
+        with(post, Post.class) {
             id == modifiedPost.id
             title == modifiedPost.title
             content == modifiedPost.content

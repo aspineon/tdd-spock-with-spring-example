@@ -12,7 +12,7 @@ class PostRequestSpec extends Specification {
         def post = request.toPost()
 
         then:
-        with(post) {
+        with(post, Post.class) {
             title == request.title
             content == request.content
         }

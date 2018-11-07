@@ -26,9 +26,11 @@ class ReadPostServiceSpec extends Specification {
         def byId = service.findById(post.id)
 
         then:
-        post.title == byId.title
-        post.content == byId.content
-        post.createdBy == byId.createdBy
+        with(byId, Post.class) {
+            post.title == title
+            post.content == content
+            post.createdBy == createdBy
+        }
     }
 
     def "findById() 없는 데이터 검색로 인한 실패"() {

@@ -29,11 +29,12 @@ class RemovePostServiceSpec extends Specification {
 
         then:
         thrown(AccessDeniedException.class)
-        def byId = repository.findById(post.id)
-        post.id == byId.get().id
-        post.title == byId.get().title
-        post.content == byId.get().content
-        post.createdBy == byId.get().createdBy
+        def byIdOp = repository.findById(post.id)
+        with(byIdOp.get(), Post.class) {
+            post.title == title
+            post.content == content
+            post.createdBy == createdBy
+        }
     }
 
     def "없는 게시물을 지우려고 하므로 실패"() {

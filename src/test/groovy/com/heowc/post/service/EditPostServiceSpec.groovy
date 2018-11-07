@@ -55,10 +55,12 @@ class EditPostServiceSpec extends Specification {
         def updatedPost = service.edit(new Post(post.id, "수정된 제목", "수정된 본문", "heowc", null, null))
 
         then:
-        def byId = repository.findById(updatedPost.id)
-        updatedPost.title == byId.get().title
-        updatedPost.content == byId.get().content
-        updatedPost.createdBy == byId.get().createdBy
+        def byIdOp = repository.findById(updatedPost.id)
+        with(byIdOp.get(), Post.class) {
+            updatedPost.title == title
+            updatedPost.content == content
+            updatedPost.createdBy == createdBy
+        }
     }
 
     def cleanup() {

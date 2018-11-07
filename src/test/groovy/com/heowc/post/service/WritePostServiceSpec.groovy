@@ -1,6 +1,7 @@
 package com.heowc.post.service
 
 import com.heowc.config.TestConfig
+import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostRepository
 import com.heowc.post.domain.PostRequest
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,10 +28,10 @@ class WritePostServiceSpec extends Specification {
         def postRequest = new PostRequest("제목 1", "본문 1")
 
         when:
-        def postOp = service.write(postRequest)
+        def post = service.write(postRequest)
 
         then:
-        with(postOp) {
+        with(post, Post.class) {
             title == postRequest.title
             content == postRequest.content
             createdBy == "heowc"
