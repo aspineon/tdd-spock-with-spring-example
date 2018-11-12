@@ -3,6 +3,7 @@ package com.heowc.post.service;
 import com.heowc.config.TestConfig;
 import com.heowc.post.domain.AccessDeniedException;
 import com.heowc.post.domain.Post;
+import com.heowc.post.domain.PostForEdit;
 import com.heowc.post.domain.PostRepository;
 import org.junit.After;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class EditPostServiceTest {
 
         // when-then
         assertThatThrownBy(
-                () -> service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문", "heowc" + 1, null, null))
+                () -> service.edit(new PostForEdit(post.getId(), "수정된 제목", "수정된 본문", "heowc" + 1))
         ).isInstanceOf(AccessDeniedException.class);
     }
 
@@ -53,7 +54,7 @@ public class EditPostServiceTest {
 
         // when-then
         assertThatThrownBy(
-                () -> service.edit(new Post(UNKNOWN_ID, "수정된 제목", "수정된 본문", "heowc", null, null))
+                () -> service.edit(new PostForEdit(UNKNOWN_ID, "수정된 제목", "수정된 본문", "heowc"))
         ).isInstanceOf(NoSuchElementException.class);
     }
 
@@ -64,7 +65,7 @@ public class EditPostServiceTest {
                 null));
 
         // when
-        Post updatedPost = service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문", "heowc", null, null));
+        Post updatedPost = service.edit(new PostForEdit(post.getId(), "수정된 제목", "수정된 본문", "heowc"));
 
         // then
         Optional<Post> byId = repository.findById(updatedPost.getId());

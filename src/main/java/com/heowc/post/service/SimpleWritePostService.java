@@ -15,8 +15,8 @@ public class SimpleWritePostService implements WritePostService {
     }
 
     @Override
-    public Post write(PostForWrite postForWrite) {
-        Post post = postForWrite.toPost();
+    public Post write(PostForWrite forWrite) {
+        Post post = forWrite.toPost();
         return repository.save(post);
     }
 }

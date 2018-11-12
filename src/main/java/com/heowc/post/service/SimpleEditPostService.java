@@ -2,6 +2,7 @@ package com.heowc.post.service;
 
 import com.heowc.post.domain.AccessDeniedException;
 import com.heowc.post.domain.Post;
+import com.heowc.post.domain.PostForEdit;
 import com.heowc.post.domain.PostRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,8 @@ public class SimpleEditPostService implements EditPostService {
     }
 
     @Override
-    public Post edit(Post post) {
+    public Post edit(PostForEdit forEdit) {
+        Post post = forEdit.toPost();
         Post byId = repository.findById(post.getId()).orElseThrow(NoSuchElementException::new);
 
         if (canNotEdit(post, byId.getCreatedBy())) {

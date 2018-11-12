@@ -3,6 +3,7 @@ package com.heowc.post.service
 import com.heowc.config.TestConfig
 import com.heowc.post.domain.AccessDeniedException
 import com.heowc.post.domain.Post
+import com.heowc.post.domain.PostForEdit
 import com.heowc.post.domain.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -28,7 +29,7 @@ class EditPostServiceSpec extends Specification {
                 null))
 
         when:
-        service.edit(new Post(post.id, "수정된 제목", "수정된 본문", "heowc" + 1, null, null))
+        service.edit(new PostForEdit(post.id, "수정된 제목", "수정된 본문", "heowc" + 1))
 
         then:
         thrown(AccessDeniedException.class)
@@ -39,7 +40,7 @@ class EditPostServiceSpec extends Specification {
         def UNKNOWN_ID = -1L
 
         when:
-        service.edit(new Post(UNKNOWN_ID, "수정된 제목", "수정된 본문", "heowc", null, null))
+        service.edit(new PostForEdit(UNKNOWN_ID, "수정된 제목", "수정된 본문", "heowc"))
 
         then:
         thrown(NoSuchElementException.class)
@@ -51,7 +52,7 @@ class EditPostServiceSpec extends Specification {
                 null))
 
         when:
-        def updatedPost = service.edit(new Post(post.id, "수정된 제목", "수정된 본문", "heowc", null, null))
+        def updatedPost = service.edit(new PostForEdit(post.id, "수정된 제목", "수정된 본문", "heowc"))
 
         then:
         def byIdOp = repository.findById(updatedPost.id)

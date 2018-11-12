@@ -20,7 +20,7 @@ public class EditPostController implements PostController {
 
     @PutMapping
     public Post edit(@Valid @RequestBody PostForEdit forEdit) {
-        return service.edit(forEdit.toPost());
+        return service.edit(forEdit);
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
