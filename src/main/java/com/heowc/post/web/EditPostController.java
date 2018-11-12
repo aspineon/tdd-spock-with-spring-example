@@ -3,11 +3,11 @@ package com.heowc.post.web;
 import com.heowc.post.domain.Post;
 import com.heowc.post.domain.PostForEdit;
 import com.heowc.post.service.EditPostService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
 
 @RestController
 public class EditPostController implements PostController {
@@ -21,11 +21,5 @@ public class EditPostController implements PostController {
     @PutMapping
     public Post edit(@Valid @RequestBody PostForEdit forEdit) {
         return service.edit(forEdit);
-    }
-
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoSuchElementException.class)
-    public void notFound() {
-        // Nothing to do
     }
 }
