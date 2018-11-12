@@ -32,7 +32,7 @@ public class Post {
         this.content = post.getContent();
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public boolean canNotAccess(String createdBy) {
+        return !this.createdBy.equals(createdBy);
     }
 }

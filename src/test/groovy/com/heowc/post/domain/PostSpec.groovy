@@ -20,4 +20,15 @@ class PostSpec extends Specification {
             createdBy == modifiedPost.createdBy
         }
     }
+
+    def "Post를 생성한 사람이 동일하여 성공"() {
+        expect:
+        new Post(1L, "제목", "본문", createdBy, null, null).canNotAccess(modifiedBy) == canNotAccess
+
+        where:
+        createdBy | modifiedBy || canNotAccess
+         "heowc"  |  "heowc"   || false
+         "heowc"  |  "test"    || true
+
+    }
 }
