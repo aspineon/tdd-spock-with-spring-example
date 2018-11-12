@@ -22,15 +22,11 @@ public class SimpleEditPostService implements EditPostService {
         Post post = forEdit.toPost();
         Post byId = repository.findById(post.getId()).orElseThrow(NoSuchElementException::new);
 
-        if (canNotEdit(post, byId.getCreatedBy())) {
+        if (byId.canNotAccess(post.getCreatedBy())) {
             throw new AccessDeniedException();
         }
 
         byId.changeFields(post);
         return repository.save(byId);
-    }
-
-    private boolean canNotEdit(Post post, String createdBy) {
-        return !createdBy.equals(post.getCreatedBy());
     }
 }
