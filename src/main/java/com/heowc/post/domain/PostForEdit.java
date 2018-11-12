@@ -26,8 +26,10 @@ public class PostForEdit {
     @Length(max = 255)
     private String content;
 
+    private String createdBy;
+
     public Post toPost() {
-        return new Post(this.id, this.title, this.content, null, null, null);
+        return new Post(this.id, this.title, this.content, this.createdBy, null, null);
     }
 
 }

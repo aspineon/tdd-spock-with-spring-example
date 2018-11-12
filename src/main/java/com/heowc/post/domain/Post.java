@@ -31,4 +31,8 @@ public class Post {
         this.title = post.getTitle();
         this.content = post.getContent();
     }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 }

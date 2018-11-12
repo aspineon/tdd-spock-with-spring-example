@@ -41,9 +41,33 @@ class EditPostControllerSpec extends Specification {
         entity.statusCode == HttpStatus.BAD_REQUEST
     }
 
+    def "id가 비어있어 HttpStatus(400)를 반환하며 실패"() {
+        given:
+        def request = new PostForEdit(null, "제목", "본문", "heowc")
+        def httpEntity = new HttpEntity<>(request)
+
+        when:
+        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
+
+        then:
+        entity.statusCode == HttpStatus.BAD_REQUEST
+    }
+
+    def "올바른 id가 아니므로 HttpStatus(400)를 반환하며 실패"() {
+        given:
+        def request = new PostForEdit(-1L, "제목", "본문", "heowc")
+        def httpEntity = new HttpEntity<>(request)
+
+        when:
+        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
+
+        then:
+        entity.statusCode == HttpStatus.BAD_REQUEST
+    }
+
     def "제목이 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
-        def request = new PostForEdit(1L, null, "본문")
+        def request = new PostForEdit(1L, null, "본문", "heowc")
         def httpEntity = new HttpEntity<>(request)
 
         when:
@@ -56,7 +80,7 @@ class EditPostControllerSpec extends Specification {
     def "제목이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
         given:
         def title = IntStream.range(0, 256).mapToObj({ value -> "1" }).collect(Collectors.joining())
-        def request = new PostForEdit(1L, title, "본문")
+        def request = new PostForEdit(1L, title, "본문", "heowc")
         def httpEntity = new HttpEntity<>(request)
 
         when:
@@ -68,7 +92,7 @@ class EditPostControllerSpec extends Specification {
 
     def "내용이 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
-        def request = new PostForEdit(1L, "제목", null)
+        def request = new PostForEdit(1L, "제목", null, "heowc")
         def httpEntity = new HttpEntity<>(request)
 
         when:
@@ -81,7 +105,7 @@ class EditPostControllerSpec extends Specification {
     def "내용이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
         given:
         def content = IntStream.range(0, 256).mapToObj({ value -> "1" }).collect(Collectors.joining())
-        def request = new PostForEdit(1L, "제목", content)
+        def request = new PostForEdit(1L, "제목", content, "heowc")
         def httpEntity = new HttpEntity<>(request)
 
         when:
@@ -93,8 +117,8 @@ class EditPostControllerSpec extends Specification {
 
     def "없는 Post를 수정하려고 하여 HttpStatus(404)를 반환하며 실패"() {
         given:
-        def UNKNOWN_ID = -1L
-        def request = new PostForEdit(UNKNOWN_ID, "제목", "본문")
+        def UNKNOWN_ID = 1L
+        def request = new PostForEdit(UNKNOWN_ID, "제목", "본문", "heowc")
         def httpEntity = new HttpEntity<>(request)
 
         when:
@@ -106,11 +130,11 @@ class EditPostControllerSpec extends Specification {
 
     def "본인의 Post가 아닌 다른 Post를 수정하려고 하여 HttpStatus(403)를 반환하며 실패"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", "test", null,
+        def post = repository.save(new Post(null, "제목", "본문", null, null,
                 null))
 
         and:
-        def request = new PostForEdit(post.id, "수정된 제목", "수정된 본문")
+        def request = new PostForEdit(post.id, "수정된 제목", "수정된 본문", "test")
         def httpEntity = new HttpEntity<>(request)
 
         when:
@@ -122,11 +146,11 @@ class EditPostControllerSpec extends Specification {
 
     def "올바른 데이터로 HttpStatus(200)과 Post 반환하며 성공"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", "heowc", null,
+        def post = repository.save(new Post(null, "제목", "본문", null, null,
                 null))
 
         and:
-        def request = new PostForEdit(post.id, "수정된 제목", "수정된 본문")
+        def request = new PostForEdit(post.id, "수정된 제목", "수정된 본문", "heowc")
         def httpEntity = new HttpEntity<>(request)
 
         when:
