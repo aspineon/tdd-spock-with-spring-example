@@ -2,7 +2,7 @@ package com.heowc.post.service;
 
 import com.heowc.post.domain.Post;
 import com.heowc.post.domain.PostRepository;
-import com.heowc.post.domain.PostRequest;
+import com.heowc.post.domain.PostForWrite;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +15,8 @@ public class SimpleWritePostService implements WritePostService {
     }
 
     @Override
-    public Post write(PostRequest postRequest) {
-        Post post = postRequest.toPost();
+    public Post write(PostForWrite postForWrite) {
+        Post post = postForWrite.toPost();
         return repository.save(post);
     }
 }

@@ -3,7 +3,7 @@ package com.heowc.post.web
 
 import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostRepository
-import com.heowc.post.domain.PostRequest
+import com.heowc.post.domain.PostForWrite
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -30,7 +30,7 @@ class WritePostControllerSpec extends Specification {
         given:
         HttpHeaders headers = new HttpHeaders()
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8)
-        HttpEntity<PostRequest> httpEntity = new HttpEntity<>(headers)
+        HttpEntity<PostForWrite> httpEntity = new HttpEntity<>(headers)
 
         when:
         def entity = restTemplate.exchange("/posts", HttpMethod.POST, httpEntity, Post.class)
@@ -41,7 +41,7 @@ class WritePostControllerSpec extends Specification {
 
     def "제목이 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
-        def request = new PostRequest(null, "본문")
+        def request = new PostForWrite(null, "본문")
 
         when:
         def entity = restTemplate.postForEntity("/posts", request, Post.class)
@@ -53,7 +53,7 @@ class WritePostControllerSpec extends Specification {
     def "제목이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
         given:
         def title = IntStream.range(0, 256).mapToObj({ value -> "1" }).collect(Collectors.joining())
-        def request = new PostRequest(title, "본문")
+        def request = new PostForWrite(title, "본문")
 
         when:
         def entity = restTemplate.postForEntity("/posts", request, Post.class)
@@ -64,7 +64,7 @@ class WritePostControllerSpec extends Specification {
 
     def "내용이 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
-        def request = new PostRequest("제목", null)
+        def request = new PostForWrite("제목", null)
 
         when:
         def entity = restTemplate.postForEntity("/posts", request, Post.class)
@@ -76,7 +76,7 @@ class WritePostControllerSpec extends Specification {
     def "내용이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
         given:
         def content = IntStream.range(0, 256).mapToObj({ value -> "1" }).collect(Collectors.joining())
-        def request = new PostRequest("제목", content)
+        def request = new PostForWrite("제목", content)
 
         when:
         def entity = restTemplate.postForEntity("/posts", request, Post.class)
@@ -87,7 +87,7 @@ class WritePostControllerSpec extends Specification {
 
     def "올바른 데이터로 HttpStatus(200)과 Post 반환하며 성공"() {
         given:
-        def request = new PostRequest("제목", "본문")
+        def request = new PostForWrite("제목", "본문")
 
         when:
         def entity = restTemplate.postForEntity("/posts", request, Post.class)

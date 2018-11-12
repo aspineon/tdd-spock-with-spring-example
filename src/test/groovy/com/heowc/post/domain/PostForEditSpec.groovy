@@ -2,17 +2,18 @@ package com.heowc.post.domain
 
 import spock.lang.Specification
 
-class PostRequestSpec extends Specification {
+class PostForEditSpec extends Specification {
 
-    def "PostRequest를 Post로 변환 성공"() {
+    def "PostForEdit를 Post로 변환 성공"() {
         given:
-        def request = new PostRequest("제목", "본문")
+        def request = new PostForEdit(1L, "제목", "본문")
 
         when:
         def post = request.toPost()
 
         then:
         with(post, Post.class) {
+            id == request.id
             title == request.title
             content == request.content
         }

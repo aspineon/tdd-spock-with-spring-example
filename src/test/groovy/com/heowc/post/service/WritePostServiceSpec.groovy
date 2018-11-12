@@ -3,7 +3,7 @@ package com.heowc.post.service
 import com.heowc.config.TestConfig
 import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostRepository
-import com.heowc.post.domain.PostRequest
+import com.heowc.post.domain.PostForWrite
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -25,7 +25,7 @@ class WritePostServiceSpec extends Specification {
 
     def "write(PostRequest) 성공"() {
         given:
-        def postRequest = new PostRequest("제목 1", "본문 1")
+        def postRequest = new PostForWrite("제목 1", "본문 1")
 
         when:
         def post = service.write(postRequest)

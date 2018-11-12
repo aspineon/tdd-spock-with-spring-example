@@ -4,7 +4,6 @@ import com.heowc.config.TestConfig;
 import com.heowc.post.domain.AccessDeniedException;
 import com.heowc.post.domain.Post;
 import com.heowc.post.domain.PostRepository;
-import com.heowc.post.domain.PostRequest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,12 +37,12 @@ public class EditPostServiceTest {
     @Test
     public void test_동일한_글쓴이ID가_아니므로_실패() {
         // given
-        PostRequest postRequest = new PostRequest("제목", "본문");
-        Post post = repository.save(postRequest.toPost());
+        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null,
+                null));
 
         // when-then
         assertThatThrownBy(
-            () -> service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문",  "heowc" + 1, null, null))
+                () -> service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문", "heowc" + 1, null, null))
         ).isInstanceOf(AccessDeniedException.class);
     }
 
@@ -54,15 +53,15 @@ public class EditPostServiceTest {
 
         // when-then
         assertThatThrownBy(
-            () -> service.edit(new Post(UNKNOWN_ID, "수정된 제목", "수정된 본문", "heowc", null, null))
+                () -> service.edit(new Post(UNKNOWN_ID, "수정된 제목", "수정된 본문", "heowc", null, null))
         ).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
     public void test_동일한_글쓴이ID가_수정하여_성공() {
         // given
-        PostRequest postRequest = new PostRequest("제목", "본문");
-        Post post = repository.save(postRequest.toPost());
+        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null,
+                null));
 
         // when
         Post updatedPost = service.edit(new Post(post.getId(), "수정된 제목", "수정된 본문", "heowc", null, null));

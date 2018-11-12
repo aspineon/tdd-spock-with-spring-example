@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostRequest {
+public class PostForWrite {
 
     @NotBlank
     @Length(max = 255)

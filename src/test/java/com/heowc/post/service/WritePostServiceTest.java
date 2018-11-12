@@ -3,7 +3,7 @@ package com.heowc.post.service;
 import com.heowc.config.TestConfig;
 import com.heowc.post.domain.Post;
 import com.heowc.post.domain.PostRepository;
-import com.heowc.post.domain.PostRequest;
+import com.heowc.post.domain.PostForWrite;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,14 +33,14 @@ public class WritePostServiceTest {
     @Test
     public void test_write_성공() {
         // given
-        PostRequest postRequest = new PostRequest("제목 1", "본문 1");
+        PostForWrite postForWrite = new PostForWrite("제목 1", "본문 1");
 
         // when
-        Post post = service.write(postRequest);
+        Post post = service.write(postForWrite);
 
         // then
-        assertThat(post).hasFieldOrPropertyWithValue("title", postRequest.getTitle());
-        assertThat(post).hasFieldOrPropertyWithValue("content", postRequest.getContent());
+        assertThat(post).hasFieldOrPropertyWithValue("title", postForWrite.getTitle());
+        assertThat(post).hasFieldOrPropertyWithValue("content", postForWrite.getContent());
         assertThat(post).hasFieldOrPropertyWithValue("createdBy", "heowc");
     }
 

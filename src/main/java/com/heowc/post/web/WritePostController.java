@@ -1,7 +1,7 @@
 package com.heowc.post.web;
 
 import com.heowc.post.domain.Post;
-import com.heowc.post.domain.PostRequest;
+import com.heowc.post.domain.PostForWrite;
 import com.heowc.post.service.WritePostService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ public class WritePostController implements PostController {
     }
 
     @PostMapping
-    public Post write(@Valid @RequestBody PostRequest request) {
+    public Post write(@Valid @RequestBody PostForWrite request) {
         return service.write(request);
     }
 
