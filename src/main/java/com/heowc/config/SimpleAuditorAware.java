@@ -1,7 +1,7 @@
 package com.heowc.config;
 
+import com.heowc.util.SessionUtils;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AuditorAware;
 
 import java.util.Optional;
@@ -11,6 +11,6 @@ public class SimpleAuditorAware implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.empty();
+        return Optional.ofNullable(SessionUtils.getAttribute("ID")).map(String.class::cast);
     }
 }
