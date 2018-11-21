@@ -5,7 +5,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 public abstract class SessionUtils {
 
-    private static int DEFAULT_SCOPE = RequestAttributes.SCOPE_SESSION;
+    private static final int DEFAULT_SCOPE = RequestAttributes.SCOPE_SESSION;
 
     public static String getId() {
         return RequestContextHolder.getRequestAttributes().getSessionId();
