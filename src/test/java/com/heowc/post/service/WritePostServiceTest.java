@@ -1,9 +1,9 @@
 package com.heowc.post.service;
 
-import com.heowc.config.TestConfig;
+import com.heowc.config.TestAuditorAware;
 import com.heowc.post.domain.Post;
-import com.heowc.post.domain.PostRepository;
 import com.heowc.post.domain.PostForWrite;
+import com.heowc.post.domain.PostRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Import(TestConfig.class)
+@Import(TestAuditorAware.class)
 public class WritePostServiceTest {
 
     private WritePostService service;

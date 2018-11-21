@@ -4,6 +4,7 @@ import com.heowc.config.TestConfig
 import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostForEdit
 import com.heowc.post.domain.PostRepository
+import com.heowc.util.SessionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -130,8 +131,10 @@ class EditPostControllerSpec extends Specification {
 
     def "본인의 Post가 아닌 다른 Post를 수정하려고 하여 HttpStatus(403)를 반환하며 실패"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", null, null,
-                null))
+        SessionUtils.setAttribute("ID", "heowc")
+
+        and:
+        def post = repository.save(new Post(null, "제목", "본문", null, null, null))
 
         and:
         def request = new PostForEdit(post.id, "수정된 제목", "수정된 본문", "test")
@@ -146,6 +149,9 @@ class EditPostControllerSpec extends Specification {
 
     def "올바른 데이터로 HttpStatus(200)과 Post 반환하며 성공"() {
         given:
+        SessionUtils.setAttribute("ID", "heowc")
+
+        and:
         def post = repository.save(new Post(null, "제목", "본문", null, null,
                 null))
 
@@ -166,5 +172,6 @@ class EditPostControllerSpec extends Specification {
 
     def cleanup() {
         repository.deleteAll()
+        SessionUtils.removeAttribute("ID")
     }
 }

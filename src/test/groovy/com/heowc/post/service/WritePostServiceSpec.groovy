@@ -1,9 +1,9 @@
 package com.heowc.post.service
 
-import com.heowc.config.TestConfig
+import com.heowc.config.TestAuditorAware
 import com.heowc.post.domain.Post
-import com.heowc.post.domain.PostRepository
 import com.heowc.post.domain.PostForWrite
+import com.heowc.post.domain.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -11,10 +11,11 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
-@Import(TestConfig.class)
+@Import(TestAuditorAware.class)
 class WritePostServiceSpec extends Specification {
 
-    @Shared service
+    @Shared
+            service
 
     @Autowired
     PostRepository repository
