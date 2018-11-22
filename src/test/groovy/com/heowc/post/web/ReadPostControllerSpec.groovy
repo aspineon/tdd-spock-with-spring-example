@@ -22,9 +22,6 @@ class ReadPostControllerSpec extends Specification {
     TestRestTemplate restTemplate
 
     def "없는 id를 조회하여 HttpStatus(404)를 반환하며 실패"() {
-        given:
-        SessionUtils.setAttribute("ID", "heowc")
-
         when:
         def entity = restTemplate.getForEntity("/posts/{id}", Post.class, 1L)
 
@@ -34,9 +31,6 @@ class ReadPostControllerSpec extends Specification {
 
     def "올바르지 않은 id를 조회하여 HttpStatus(400)를 반환하며 실패"() {
         given:
-        SessionUtils.setAttribute("ID", "heowc")
-
-        and:
         repository.save(new Post(null, "제목", "본문", "heowc", null,
                 null))
         when:
@@ -48,9 +42,6 @@ class ReadPostControllerSpec extends Specification {
 
     def "해당 id에 대한 게시글이 존재하므로 HttpStatus(200)과 Post 반환하며 성공"() {
         given:
-        SessionUtils.setAttribute("ID", "heowc")
-
-        and:
         def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
 
         when:
