@@ -25,8 +25,7 @@ class EditPostServiceSpec extends Specification {
 
     def "동일한 글쓴이 ID가 아니므로 실패"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", "heowc", null,
-                null))
+        def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
 
         when:
         service.edit(new PostForEdit(post.id, "수정된 제목", "수정된 본문", "heowc" + 1))
@@ -48,8 +47,7 @@ class EditPostServiceSpec extends Specification {
 
     def "동일한 글쓴이 ID가 수정하여 성공"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", "heowc", null,
-                null))
+        def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
 
         when:
         def updatedPost = service.edit(new PostForEdit(post.id, "수정된 제목", "수정된 본문", "heowc"))

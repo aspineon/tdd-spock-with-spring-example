@@ -38,8 +38,7 @@ public class EditPostServiceTest {
     @Test
     public void test_동일한_글쓴이ID가_아니므로_실패() {
         // given
-        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null,
-                null));
+        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null, null));
 
         // when-then
         assertThatThrownBy(
@@ -61,8 +60,7 @@ public class EditPostServiceTest {
     @Test
     public void test_동일한_글쓴이ID가_수정하여_성공() {
         // given
-        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null,
-                null));
+        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null, null));
 
         // when
         Post updatedPost = service.edit(new PostForEdit(post.getId(), "수정된 제목", "수정된 본문", "heowc"));
