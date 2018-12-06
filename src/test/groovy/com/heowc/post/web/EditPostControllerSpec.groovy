@@ -1,177 +1,183 @@
 package com.heowc.post.web
 
-import com.heowc.config.TestConfig
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.heowc.post.domain.AccessDeniedException
 import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostForEdit
-import com.heowc.post.domain.PostRepository
-import com.heowc.util.SessionUtils
+import com.heowc.post.service.EditPostService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.context.annotation.Import
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import spock.lang.Specification
+import spock.mock.DetachedMockFactory
 
 import java.util.stream.Collectors
 import java.util.stream.IntStream
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestConfig.class)
+import static org.hamcrest.Matchers.*
+import static org.springframework.http.MediaType.APPLICATION_JSON
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+
+@WebMvcTest(controllers = EditPostController.class)
 class EditPostControllerSpec extends Specification {
 
     @Autowired
-    PostRepository repository
+    MockMvc mvc
 
     @Autowired
-    TestRestTemplate restTemplate
+    EditPostService service
+
+    @Autowired
+    ObjectMapper mapper
 
     def "body가 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
-        HttpHeaders headers = new HttpHeaders()
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8)
-        HttpEntity<PostForEdit> httpEntity = new HttpEntity<>(headers)
+        def EMPTY_BODY = ""
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        expect:
+        mvc.perform(put("/posts")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
+                    .content(EMPTY_BODY))
+            .andExpect(status().isBadRequest())
     }
 
     def "id가 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
         def request = new PostForEdit(null, "제목", "본문", "heowc")
-        def httpEntity = new HttpEntity<>(request)
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
     }
 
     def "올바른 id가 아니므로 HttpStatus(400)를 반환하며 실패"() {
         given:
         def request = new PostForEdit(-1L, "제목", "본문", "heowc")
-        def httpEntity = new HttpEntity<>(request)
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
     }
 
     def "제목이 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
         def request = new PostForEdit(1L, null, "본문", "heowc")
-        def httpEntity = new HttpEntity<>(request)
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
     }
 
     def "제목이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
         given:
         def title = IntStream.range(0, 256).mapToObj({ value -> "1" }).collect(Collectors.joining())
         def request = new PostForEdit(1L, title, "본문", "heowc")
-        def httpEntity = new HttpEntity<>(request)
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
     }
 
     def "내용이 비어있어 HttpStatus(400)를 반환하며 실패"() {
         given:
         def request = new PostForEdit(1L, "제목", null, "heowc")
-        def httpEntity = new HttpEntity<>(request)
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
-    }
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())    }
 
     def "내용이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
         given:
         def content = IntStream.range(0, 256).mapToObj({ value -> "1" }).collect(Collectors.joining())
         def request = new PostForEdit(1L, "제목", content, "heowc")
-        def httpEntity = new HttpEntity<>(request)
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
     }
 
     def "없는 Post를 수정하려고 하여 HttpStatus(404)를 반환하며 실패"() {
         given:
-        def UNKNOWN_ID = 1L
-        def request = new PostForEdit(UNKNOWN_ID, "제목", "본문", "heowc")
-        def httpEntity = new HttpEntity<>(request)
+        service.edit(_) >> { throw new NoSuchElementException() }
 
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
+        and:
+        def request = new PostForEdit(1L, "제목", "본문", "heowc")
 
-        then:
-        entity.statusCode == HttpStatus.NOT_FOUND
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound())
     }
 
     def "본인의 Post가 아닌 다른 Post를 수정하려고 하여 HttpStatus(403)를 반환하며 실패"() {
         given:
-        SessionUtils.setAttribute("ID", "heowc")
+        service.edit(_) >> { throw new AccessDeniedException() }
 
         and:
-        def post = repository.save(new Post(null, "제목", "본문", null, null, null))
+        def request = new PostForEdit(1L, "수정된 제목", "수정된 본문", "test")
 
-        and:
-        def request = new PostForEdit(post.id, "수정된 제목", "수정된 본문", "test")
-        def httpEntity = new HttpEntity<>(request)
-
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.FORBIDDEN
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isForbidden())
     }
 
     def "올바른 데이터로 HttpStatus(200)과 Post 반환하며 성공"() {
         given:
-        SessionUtils.setAttribute("ID", "heowc")
+        def willReturn = new Post(1L, "수정된 제목", "수정된 본문", "heowc", null, null)
+        service.edit(_) >> willReturn
 
         and:
-        def post = repository.save(new Post(null, "제목", "본문", null, null,
-                null))
+        def request = new PostForEdit(1L, "수정된 제목", "수정된 본문", "heowc")
 
-        and:
-        def request = new PostForEdit(post.id, "수정된 제목", "수정된 본문", "heowc")
-        def httpEntity = new HttpEntity<>(request)
-
-        when:
-        def entity = restTemplate.exchange("/posts", HttpMethod.PUT, httpEntity, Post.class)
-
-        then:
-        entity.statusCode == HttpStatus.OK
-        with(entity.body, Post.class) {
-            request.title == title
-            request.content == content
-        }
+        expect:
+        mvc.perform(put("/posts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath('$.id', is(willReturn.id.intValue())))
+            .andExpect(jsonPath('$.title', is(willReturn.title)))
+            .andExpect(jsonPath('$.content', is(willReturn.content)))
+            .andExpect(jsonPath('$.createdBy', is(willReturn.createdBy)))
     }
 
-    def cleanup() {
-        repository.deleteAll()
-        SessionUtils.removeAttribute("ID")
+    @TestConfiguration
+    static class MockConfig {
+
+        def detachedMockFactory = new DetachedMockFactory()
+
+        @Bean
+        EditPostService editPostService() {
+            return detachedMockFactory.Mock(EditPostService)
+        }
     }
 }
