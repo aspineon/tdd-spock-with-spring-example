@@ -1,64 +1,83 @@
 package com.heowc.post.web
 
-import com.heowc.config.TestConfig
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.heowc.post.domain.Post
-import com.heowc.post.domain.PostRepository
-import com.heowc.util.SessionUtils
+import com.heowc.post.service.ReadPostService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.context.annotation.Import
-import org.springframework.http.HttpStatus
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
+import spock.mock.DetachedMockFactory
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestConfig.class)
+import static org.hamcrest.Matchers.is
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
+@WebMvcTest(controllers = ReadPostController.class)
 class ReadPostControllerSpec extends Specification {
 
     @Autowired
-    PostRepository repository
+    MockMvc mvc
 
     @Autowired
-    TestRestTemplate restTemplate
+    ReadPostService service
+
+    @Autowired
+    ObjectMapper mapper
 
     def "없는 id를 조회하여 HttpStatus(404)를 반환하며 실패"() {
-        when:
-        def entity = restTemplate.getForEntity("/posts/{id}", Post.class, 1L)
+        given:
+        service.findById(_) >> { throw new NoSuchElementException() }
 
-        then:
-        entity.statusCode == HttpStatus.NOT_FOUND
+        and:
+        def EMPTY_ID = 1L
+
+        expect:
+        mvc.perform(get("/posts/{id}", EMPTY_ID)
+                .accept(APPLICATION_JSON_UTF8))
+            .andExpect(status().isNotFound())
     }
 
     def "올바르지 않은 id를 조회하여 HttpStatus(400)를 반환하며 실패"() {
         given:
-        repository.save(new Post(null, "제목", "본문", "heowc", null,
-                null))
-        when:
-        def entity = restTemplate.getForEntity("/posts/{id}", Post.class, "s")
+        service.findById(_) >> { throw new NoSuchElementException() }
 
-        then:
-        entity.statusCode == HttpStatus.BAD_REQUEST
+        and:
+        def EMPTY_ID = "empty"
+
+        expect:
+        mvc.perform(get("/posts/{id}", EMPTY_ID)
+                .accept(APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
     }
 
     def "해당 id에 대한 게시글이 존재하므로 HttpStatus(200)과 Post 반환하며 성공"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
+        def willReturn = new Post(1L, "제목", "본문", "heowc", null, null)
+        service.findById(_) >> willReturn
 
-        when:
-        def entity = restTemplate.getForEntity("/posts/{id}", Post.class, post.getId())
-
-        then:
-        entity.statusCode == HttpStatus.OK
-        with(entity.body, Post.class) {
-            post.id == id
-            post.title == title
-            post.content == content
-            post.createdBy == createdBy
-        }
+        expect:
+        mvc.perform(get("/posts/{id}", willReturn.id)
+                .accept(APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath('$.id', is(willReturn.id.intValue())))
+            .andExpect(jsonPath('$.title', is(willReturn.title)))
+            .andExpect(jsonPath('$.content', is(willReturn.content)))
+            .andExpect(jsonPath('$.createdBy', is(willReturn.createdBy)))
     }
 
-    def cleanup() {
-        repository.deleteAll()
-        SessionUtils.removeAttribute("ID")
+    @TestConfiguration
+    static class MockConfig {
+
+        def detachedMockFactory = new DetachedMockFactory()
+
+        @Bean
+        ReadPostService readPostService() {
+            return detachedMockFactory.Mock(ReadPostService)
+        }
     }
 }
