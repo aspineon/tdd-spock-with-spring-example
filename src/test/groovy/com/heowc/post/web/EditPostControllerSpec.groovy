@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import spock.lang.Specification
 import spock.mock.DetachedMockFactory
 
@@ -19,7 +17,7 @@ import java.util.stream.Collectors
 import java.util.stream.IntStream
 
 import static org.hamcrest.Matchers.*
-import static org.springframework.http.MediaType.APPLICATION_JSON
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -41,9 +39,9 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .accept(MediaType.APPLICATION_JSON_UTF8)
-                    .content(EMPTY_BODY))
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
+                .content(EMPTY_BODY))
             .andExpect(status().isBadRequest())
     }
 
@@ -53,10 +51,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+            .andExpect(status().isBadRequest())
     }
 
     def "올바른 id가 아니므로 HttpStatus(400)를 반환하며 실패"() {
@@ -65,10 +63,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+            .andExpect(status().isBadRequest())
     }
 
     def "제목이 비어있어 HttpStatus(400)를 반환하며 실패"() {
@@ -77,10 +75,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+            .andExpect(status().isBadRequest())
     }
 
     def "제목이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
@@ -90,10 +88,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+            .andExpect(status().isBadRequest())
     }
 
     def "내용이 비어있어 HttpStatus(400)를 반환하며 실패"() {
@@ -102,10 +100,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())    }
+            .andExpect(status().isBadRequest())    }
 
     def "내용이 255자를 초과하여 HttpStatus(400)를 반환하며 실패"() {
         given:
@@ -114,10 +112,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+            .andExpect(status().isBadRequest())
     }
 
     def "없는 Post를 수정하려고 하여 HttpStatus(404)를 반환하며 실패"() {
@@ -129,10 +127,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isNotFound())
+            .andExpect(status().isNotFound())
     }
 
     def "본인의 Post가 아닌 다른 Post를 수정하려고 하여 HttpStatus(403)를 반환하며 실패"() {
@@ -144,10 +142,10 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isForbidden())
+            .andExpect(status().isForbidden())
     }
 
     def "올바른 데이터로 HttpStatus(200)과 Post 반환하며 성공"() {
@@ -160,8 +158,8 @@ class EditPostControllerSpec extends Specification {
 
         expect:
         mvc.perform(put("/posts")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath('$.id', is(willReturn.id.intValue())))
