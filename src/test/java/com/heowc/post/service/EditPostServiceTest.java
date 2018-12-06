@@ -1,6 +1,5 @@
 package com.heowc.post.service;
 
-import com.heowc.config.TestConfig;
 import com.heowc.post.domain.AccessDeniedException;
 import com.heowc.post.domain.Post;
 import com.heowc.post.domain.PostForEdit;
@@ -11,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.NoSuchElementException;
@@ -22,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Import(TestConfig.class)
 public class EditPostServiceTest {
 
     private EditPostService service;

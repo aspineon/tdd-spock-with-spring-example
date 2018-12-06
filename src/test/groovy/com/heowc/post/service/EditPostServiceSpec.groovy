@@ -1,17 +1,18 @@
 package com.heowc.post.service
 
-import com.heowc.config.TestConfig
 import com.heowc.post.domain.AccessDeniedException
 import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostForEdit
 import com.heowc.post.domain.PostRepository
+import com.heowc.util.SessionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
+import org.springframework.mock.web.MockHttpServletRequest
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletWebRequest
 import spock.lang.Specification
 
 @SpringBootTest
-@Import(TestConfig.class)
 class EditPostServiceSpec extends Specification {
 
     def service
@@ -20,6 +21,8 @@ class EditPostServiceSpec extends Specification {
     PostRepository repository
 
     def setup() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
         service = new SimpleEditPostService(repository)
     }
 
@@ -36,6 +39,9 @@ class EditPostServiceSpec extends Specification {
 
     def "없는 게시물을 수정하려고 하므로 실패"() {
         given:
+        SessionUtils.setAttribute("ID", "heowc")
+
+        and:
         def UNKNOWN_ID = -1L
 
         when:
@@ -47,6 +53,9 @@ class EditPostServiceSpec extends Specification {
 
     def "동일한 글쓴이 ID가 수정하여 성공"() {
         given:
+        SessionUtils.setAttribute("ID", "heowc")
+
+        and:
         def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
 
         when:
@@ -63,5 +72,6 @@ class EditPostServiceSpec extends Specification {
 
     def cleanup() {
         repository.deleteAll()
+        SessionUtils.removeAttribute("ID")
     }
 }

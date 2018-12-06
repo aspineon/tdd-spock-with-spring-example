@@ -1,6 +1,5 @@
 package com.heowc.post.service;
 
-import com.heowc.config.TestConfig;
 import com.heowc.post.domain.AccessDeniedException;
 import com.heowc.post.domain.Post;
 import com.heowc.post.domain.PostRepository;
@@ -10,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.NoSuchElementException;
@@ -21,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Import(TestConfig.class)
 public class RemovePostServiceTest {
 
     private RemovePostService service;
@@ -37,11 +34,11 @@ public class RemovePostServiceTest {
     @Test
     public void test_동일한_글쓴이ID가_아니므로_실패() {
         // given
-        Post post = repository.save(new Post(null, "제목", "본문",  "heowc", null, null));
+        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null, null));
 
         // when-then
         assertThatThrownBy(
-            () -> service.remove(new Post(post.getId(), null, null,  "wonchul", null, null))
+                () -> service.remove(new Post(post.getId(), null, null, "wonchul", null, null))
         ).isInstanceOf(AccessDeniedException.class);
 
         Optional<Post> byId = repository.findById(post.getId());
@@ -60,14 +57,14 @@ public class RemovePostServiceTest {
 
         // when-then
         assertThatThrownBy(
-            () -> service.remove(new Post(UNKNOWN_ID, null, null, "heowc", null, null))
+                () -> service.remove(new Post(UNKNOWN_ID, null, null, "heowc", null, null))
         ).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
     public void test_동일한_글쓴이ID가_삭제하여_성공() {
         // given
-        Post post = repository.save(new Post(null, "제목", "본문",  "heowc", null, null));
+        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null, null));
 
         // when
         service.remove(new Post(post.getId(), null, null, "heowc", null, null));
