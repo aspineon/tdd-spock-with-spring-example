@@ -1,5 +1,6 @@
 package com.heowc.post.domain;
 
+import com.heowc.util.SessionUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ public class PostForEdit {
     private String createdBy;
 
     public Post toPost() {
-        return new Post(this.id, this.title, this.content, this.createdBy, null, null);
+        return new Post(this.id, this.title, this.content, SessionUtils.getAttribute("ID").toString(), null, null);
     }
 
 }

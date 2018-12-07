@@ -4,6 +4,7 @@ import com.heowc.post.domain.AccessDeniedException;
 import com.heowc.post.domain.Post;
 import com.heowc.post.domain.PostForEdit;
 import com.heowc.post.domain.PostRepository;
+import com.heowc.util.SessionUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,17 +36,20 @@ public class EditPostServiceTest {
     @Test
     public void test_동일한_글쓴이ID가_아니므로_실패() {
         // given
-        Post post = repository.save(new Post(null, "제목", "본문", "heowc", null, null));
+        SessionUtils.setAttribute("ID", "test");
+        Post post = repository.save(new Post(null, "제목", "본문", null, null, null));
+        SessionUtils.setAttribute("ID", "heowc");
 
         // when-then
         assertThatThrownBy(
-                () -> service.edit(new PostForEdit(post.getId(), "수정된 제목", "수정된 본문", "heowc" + 1))
+                () -> service.edit(new PostForEdit(post.getId(), "수정된 제목", "수정된 본문", null))
         ).isInstanceOf(AccessDeniedException.class);
     }
 
     @Test
     public void test_없는_게시물을_수정하려고_하므로_실패() {
         // given
+        SessionUtils.setAttribute("ID", "heowc");
         final long UNKNOWN_ID = -1L;
 
         // when-then
@@ -57,6 +61,7 @@ public class EditPostServiceTest {
     @Test
     public void test_동일한_글쓴이ID가_수정하여_성공() {
         // given
+        SessionUtils.setAttribute("ID", "heowc");
         Post post = repository.save(new Post(null, "제목", "본문", "heowc", null, null));
 
         // when
@@ -74,5 +79,6 @@ public class EditPostServiceTest {
     @After
     public void after_cleanup() {
         repository.deleteAll();
+        SessionUtils.removeAttribute("ID");
     }
 }

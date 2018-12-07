@@ -21,17 +21,21 @@ class EditPostServiceSpec extends Specification {
     PostRepository repository
 
     def setup() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
+        MockHttpServletRequest request = new MockHttpServletRequest()
+        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request))
         service = new SimpleEditPostService(repository)
     }
 
     def "동일한 글쓴이 ID가 아니므로 실패"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
+        SessionUtils.setAttribute("ID", "test")
+        def post = repository.save(new Post(null, "제목", "본문", null, null, null))
+
+        and:
+        SessionUtils.setAttribute("ID", "heowc")
 
         when:
-        service.edit(new PostForEdit(post.id, "수정된 제목", "수정된 본문", "heowc" + 1))
+        service.edit(new PostForEdit(post.id, "수정된 제목", "수정된 본문", null))
 
         then:
         thrown(AccessDeniedException.class)
