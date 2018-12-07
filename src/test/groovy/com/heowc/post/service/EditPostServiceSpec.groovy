@@ -7,14 +7,13 @@ import com.heowc.post.domain.PostRepository
 import com.heowc.util.SessionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.mock.web.MockHttpServletRequest
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletWebRequest
+import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
 class EditPostServiceSpec extends Specification {
 
+    @Shared
     def service
 
     @Autowired

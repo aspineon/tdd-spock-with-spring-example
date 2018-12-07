@@ -4,11 +4,13 @@ import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
 class ReadPostServiceSpec extends Specification {
 
+    @Shared
     def service
 
     @Autowired
@@ -20,7 +22,7 @@ class ReadPostServiceSpec extends Specification {
 
     def "findById() 성공"() {
         given:
-        def post = repository.save(new Post(null, "제목", "본문", "heowc",null, null))
+        def post = repository.save(new Post(null, "제목", "본문", "heowc", null, null))
 
         when:
         def byId = service.findById(post.id)

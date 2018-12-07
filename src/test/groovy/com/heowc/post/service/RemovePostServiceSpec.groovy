@@ -5,11 +5,13 @@ import com.heowc.post.domain.Post
 import com.heowc.post.domain.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
 class RemovePostServiceSpec extends Specification {
 
+    @Shared
     def service
 
     @Autowired
@@ -18,7 +20,7 @@ class RemovePostServiceSpec extends Specification {
     def setup() {
         service = new SimpleRemovePostService(repository)
     }
-    
+
     def "동일한 글쓴이 ID가 아니므로 실패"() {
         given:
         def post = new Post(null, "제목", "본문", "heowc", null, null)
@@ -47,7 +49,7 @@ class RemovePostServiceSpec extends Specification {
         then:
         thrown(NoSuchElementException.class)
     }
-    
+
     def "동일한 글쓴이 ID가 삭제하여 성공"() {
         given:
         def post = new Post(null, "제목", "본문", "heowc", null, null)
