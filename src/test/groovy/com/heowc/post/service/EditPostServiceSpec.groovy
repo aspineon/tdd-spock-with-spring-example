@@ -21,8 +21,6 @@ class EditPostServiceSpec extends Specification {
     PostRepository repository
 
     def setup() {
-        MockHttpServletRequest request = new MockHttpServletRequest()
-        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request))
         service = new SimpleEditPostService(repository)
     }
 
